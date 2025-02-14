@@ -27,7 +27,7 @@ with ta
 
 ```
 docker pull jogize13/rb_dreams:large
-docker pull jogize13/rb_dreams:large
+docker pull jogize13/rb_dreams:light
 ```
 
 ## 🚀 Run
