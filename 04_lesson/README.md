@@ -16,11 +16,12 @@ docker build -t jogize13/rb_dreams:light -f light.Dockerfile .
 
 ## ⬆️ upload to docker hub 
 ```
-docker tag image_id reponame:image_tag
+docker tag image_id repo_name:image_tag
+docker login -u username
+docker push repo_name:image_tag
 ```
 
-in my case it will be jogize13/rb_dreams:1 and jogize13/rb_dreams:2 
-with ta
+in my case it will be jogize13/rb_dreams:1 and jogize13/rb_dreams:2 or light/large and latet
 
 
 ## ⬇️ Download image to pc 
