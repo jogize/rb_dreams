@@ -1,0 +1,54 @@
+version: "3.7"
+services:
+
+  log-generator:
+    image: busybox
+    container_name: log-generator
+    command: sh -c 'while true; do echo "Fluentd test log $$(date)"; sleep 2; done'
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: log_container_fluentd.logs
+    depends_on:
+      - fluentd
+    networks:
+      - bridge-network
+
+
+  fluentd:
+    build:
+      context: ./fluentd
+      dockerfile: Dockerfile
+    container_name: fluentd
+    ports:
+      - "127.0.0.1:24224:24224"
+      - "127.0.0.1:24224:24224/udp"
+    depends_on:
+      - loki
+    networks:
+      - bridge-network
+
+  loki:
+    image: grafana/loki:2.7.1
+    container_name: loki
+    networks:
+      - bridge-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=yahNg9ca1eifaelee5leidaiku9aic
+    depends_on:
+      - loki
+    networks:
+      - bridge-network
+
+networks:
+  bridge-network:
+    driver: bridge      
