@@ -1,0 +1,35 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-nginx  # Ім'я Deployment
+spec:
+  replicas: 2  # Кількість реплік 
+  selector:
+    matchLabels:
+      app: test-nginx  # Селектор для вибору
+  template:
+    metadata:
+      labels:
+        app: test-nginx  # Лейбл для подів
+    spec:
+      containers:
+      - name: test-nginx-container  # Назва контейнера
+        image: nginx:latest  # Образ контейнера 
+        ports:
+        - containerPort: 80  # Порт, на якому працює nginx
+
+---
+# Service 
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-nginx-service  # Назва сервісу
+spec:
+  selector:
+    app: test-nginx  # Вибір подів за селектором
+  ports:
+  - protocol: TCP  # Використовуємо протокол TCP
+    port: 80  # Порт, на якому Service буде доступний всередині кластера
+    targetPort: 80  # Порт, на який Service буде перенаправляти запити
+  type: ClusterIP  # Тип Service (можна змінити на NodePort для доступу ззовні)
