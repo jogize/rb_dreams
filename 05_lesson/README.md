@@ -83,3 +83,23 @@ docker exec container_vol1 sh -c "echo 'Привіт з container_vol1' > /share
 ```
 docker exec container_vol2 cat /shared/shared_file.txt
 ```
+
+
+
+```mermaid
+
+flowchart TD
+    A[Client] -.443/80tcp.-> B(HAproxy-back)
+    A[Client] --443/80tcp--> C(HAproxy-main)
+
+    subgraph docker-swarm-cluster
+        Traefik-service
+        Info-service
+    end
+
+    B(HAproxy-back) -.-> Traefik-service
+    C(HAproxy-main) --> Traefik-service
+    Traefik-service --80/tcp--> Info-service
+
+    style A color:#FFFFFF, stroke:#00C853, fill:#00C853
+```    
